@@ -1,4 +1,23 @@
 <?php
+//  getDirs se encarga de obtener los directorios de manera recursiva
+function getDirs($dir){
+  $result = '';
+  $cdir = scandir($dir);
+  foreach ($cdir as $key => $value){
+    if(!in_array($value,array(".",".."))){
+      if(is_dir($dir.DIRECTORY_SEPARATOR.$value)){
+        $result.=getDirs($dir.DIRECTORY_SEPARATOR.$value);
+      } else {
+        if($dir != '.' && ($value == 'index.php' || $value == 'index.html')){
+          $result.='<a id="dir_lnk" href="'.substr($dir, 2).DIRECTORY_SEPARATOR.'""><p>'.substr($dir, 2).DIRECTORY_SEPARATOR.'</p></a>';
+        }
+      }
+    }
+  }
+  return $result;
+}
+
+//  Lista de detalles para mostrar sobre el servior
 $indicesServer = array(
   'PHP_SELF',
   'argv',
@@ -48,30 +67,13 @@ foreach($indicesServer as $arg){
     if(strlen($_SERVER[$arg]) > 0){
       $tbHtml.='<tr><td>'.$arg.'</td><td>' . $_SERVER[$arg] . '</td></tr>';
     } else {
-      //$tbHtml.='<tr><td>'.$arg.'</td><td>-</td></tr>';
+      $tbHtml.='<tr><td>'.$arg.'</td><td>-</td></tr>';
     }
   } else {
-    //$tbHtml.='<tr><td>'.$arg.'</td><td>-</td></tr>';
+    $tbHtml.='<tr><td>'.$arg.'</td><td>-</td></tr>';
   }
 }
 $tbHtml.='</table>';
-
-function getDirs($dir){
-  $result = '';
-  $cdir = scandir($dir);
-  foreach ($cdir as $key => $value){
-    if(!in_array($value,array(".",".."))){
-      if(is_dir($dir . DIRECTORY_SEPARATOR . $value)){
-        $result.=getDirs($dir . DIRECTORY_SEPARATOR . $value);
-      } else {
-        if($dir != '.' && ($value == 'index.php' || $value == 'index.html')){
-          $result.='<a id="dir_lnk" href="'.substr($dir, 2).DIRECTORY_SEPARATOR.'""><p>'.substr($dir, 2).DIRECTORY_SEPARATOR.'</p></a>';
-        }
-      }
-    }
-  }
-  return $result;
-}
 ?>
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
