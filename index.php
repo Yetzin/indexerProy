@@ -1,36 +1,4 @@
 <?php
-/*
-*   Importante!
-*
-*   Para que los directorios aparezcan es necesario agregarlos
-*   en el array $directorios.
-*
-*/
-$directorios = array(
-  'mitazu/',
-  'tiltlac/',
-  'metodosn/u1/',
-  'metodosn/u2/',
-  'metodosn/u3/',
-  'metodosn/RegLinealU4/'
-);
-
-function dirToArray($dir){
-  $result = array();
-  $cdir = scandir($dir);
-  foreach ($cdir as $key => $value){
-    if(!in_array($value,array(".",".."))){
-      if(is_dir($dir . DIRECTORY_SEPARATOR . $value)){
-        $result[$value] = dirToArray($dir . DIRECTORY_SEPARATOR . $value);
-        echo $value.'<br>';
-      } else {
-        $result[] = $value;
-      }
-    }
-  }
-  return $result;
-}
-
 $indicesServer = array(
   'PHP_SELF',
   'argv',
@@ -73,7 +41,7 @@ $indicesServer = array(
   'PATH_INFO',
   'ORIG_PATH_INFO'
 );
-$fragHtml = '';
+
 $tbHtml = '<table> <tr><th>Propiead</th><th>Valor</th></tr>';
 foreach($indicesServer as $arg){
   if(isset($_SERVER[$arg])){
@@ -86,8 +54,21 @@ foreach($indicesServer as $arg){
 }
 $tbHtml.='</table>';
 
-foreach ($directorios as $valor){
-  $fragHtml.='<a id="dir_lnk" href="'.$valor.'""><p>'.$valor.'</p></a>';
+function getDirs($dir){
+  $result = '';
+  $cdir = scandir($dir);
+  foreach ($cdir as $key => $value){
+    if(!in_array($value,array(".",".."))){
+      if(is_dir($dir . DIRECTORY_SEPARATOR . $value)){
+        $result.=getDirs($dir . DIRECTORY_SEPARATOR . $value);
+      } else {
+        if($dir != '.' && ($value == 'index.php' || $value == 'index.html')){
+          $result.='<a id="dir_lnk" href="'.substr($dir, 2).DIRECTORY_SEPARATOR.'""><p>'.substr($dir, 2).DIRECTORY_SEPARATOR.'</p></a>';
+        }
+      }
+    }
+  }
+  return $result;
 }
 ?>
 <!DOCTYPE html>
@@ -104,11 +85,7 @@ foreach ($directorios as $valor){
         box-sizing: border-box;
       }
       header{
-        position: absolute;
         display: block;
-        top: 0;
-        left: 0;
-        right: 0;
         height: min-content;
         background-color: #252932;
         color: #fff;
@@ -116,7 +93,7 @@ foreach ($directorios as $valor){
       }
       .cont_pag{
         width: 100%;
-        padding: 60px 5%;
+        padding: 50px 5%;
       }
       .cont_lnks{
         width: max-content;
@@ -190,14 +167,13 @@ foreach ($directorios as $valor){
       <br>
       <div class="dirs_list">
         <h3>Los proyectos encontrados son:</h3>
-        <div class="cont_lnks"> <?=$fragHtml; ?> </div>
+        <div class="cont_lnks"> <?=getDirs('.'); ?> </div>
       </div>
       <br>
       <h3>Información del servidor</h3>
       <br>
       <a id="mas_tb" onclick="mostrarOps()">+ Mostrar</a>
       <div id="cont_tb"> <?=$tbHtml; ?> </div>
-      <div id="cont_dir"> <?=print_r(dirToArray("./")); ?> </div>
     </div>
   </body>
 </html>
