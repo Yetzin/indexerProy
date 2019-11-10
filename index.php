@@ -47,9 +47,11 @@ foreach($indicesServer as $arg){
   if(isset($_SERVER[$arg])){
     if(strlen($_SERVER[$arg]) > 0){
       $tbHtml.='<tr><td>'.$arg.'</td><td>' . $_SERVER[$arg] . '</td></tr>';
+    } else {
+      //$tbHtml.='<tr><td>'.$arg.'</td><td>-</td></tr>';
     }
   } else {
-    //$tbHtml.='<tr><td>'.$arg.'</td><td>Vacio</td></tr>';
+    //$tbHtml.='<tr><td>'.$arg.'</td><td>-</td></tr>';
   }
 }
 $tbHtml.='</table>';
