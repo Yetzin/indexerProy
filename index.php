@@ -9,7 +9,8 @@ function getDirs($dir){
         $result.=getDirs($dir.DIRECTORY_SEPARATOR.$value);
       } else {
         if($dir != '.' && ($value == 'index.php' || $value == 'index.html')){
-          $result.='<a id="dir_lnk" href="'.substr($dir, 2).DIRECTORY_SEPARATOR.'""><p>'.substr($dir, 2).DIRECTORY_SEPARATOR.'</p></a>';
+          $result='<a id="dir_lnk" href="'.substr($dir, 2).DIRECTORY_SEPARATOR.'""><p>'.substr($dir, 2).DIRECTORY_SEPARATOR.'</p></a>';
+          break;
         }
       }
     }
@@ -60,18 +61,17 @@ $indicesServer = array(
   'PATH_INFO',
   'ORIG_PATH_INFO'
 );
-
 $tbHtml = '<table> <tr><th>Propiead</th><th>Valor</th></tr>';
 foreach($indicesServer as $arg){
   if(isset($_SERVER[$arg])){
     if(strlen($_SERVER[$arg]) > 0){
       $tbHtml.='<tr><td>'.$arg.'</td><td>' . $_SERVER[$arg] . '</td></tr>';
-    } else {
+    }/* else {
       $tbHtml.='<tr><td>'.$arg.'</td><td>-</td></tr>';
-    }
-  } else {
+    }*/
+  }/* else {
     $tbHtml.='<tr><td>'.$arg.'</td><td>-</td></tr>';
-  }
+  }*/
 }
 $tbHtml.='</table>';
 ?>
@@ -95,6 +95,9 @@ $tbHtml.='</table>';
         color: #fff;
         padding: 10px 5%;
       }
+      body{
+        background-color: aliceblue;
+      }
       .cont_pag{
         width: 100%;
         padding: 50px 5%;
@@ -107,7 +110,7 @@ $tbHtml.='</table>';
         display: none;
         width: 100%;
         padding: 5px 5px 5px 30px;
-        background-color: #f0eff9;
+        background-color: #eedbff;
         text-align: left;
       }
       #mas_tb{
@@ -121,7 +124,7 @@ $tbHtml.='</table>';
         text-decoration: none;
         color: #252932;
         font-weight: 600;
-        display: block;
+        display: list-item;
         width: 100%;
         transition: 400ms;
         padding: 8px 0;
@@ -163,7 +166,7 @@ $tbHtml.='</table>';
   </head>
   <body>
     <header>
-      <p class="title_pag"><?=$_SERVER['HTTP_HOST']; ?></p>
+      <p class="title_pag" title="<?=$_SERVER['SERVER_NAME']; ?>"><?=$_SERVER['HTTP_HOST']; ?></p>
     </header>
     <div class="cont_pag">
       <p>Servidor: <?=$_SERVER['SERVER_ADDR']; ?></p>
