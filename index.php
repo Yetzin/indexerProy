@@ -74,6 +74,10 @@ foreach($indicesServer as $arg){
   }*/
 }
 $tbHtml.='</table>';
+$directoriosObt = getDirs('.');
+if(strlen($directoriosObt) == 0){
+  $directoriosObt = '<em style="text-decoration: underline; display: list-item;">No se ha encontrado proyectos...</em>';
+}
 ?>
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
@@ -104,7 +108,7 @@ $tbHtml.='</table>';
       }
       .cont_lnks{
         width: max-content;
-        padding: 1px 20px;
+        padding: 1px 35px;
       }
       #cont_tb{
         display: none;
@@ -174,13 +178,17 @@ $tbHtml.='</table>';
       <br>
       <div class="dirs_list">
         <h3>Los proyectos encontrados son:</h3>
-        <div class="cont_lnks"> <?=getDirs('.'); ?> </div>
+        <div class="cont_lnks">
+          <?=$directoriosObt; ?>
+        </div>
       </div>
       <br>
       <h3>Información del servidor</h3>
       <br>
       <a id="mas_tb" onclick="mostrarOps()">+ Mostrar</a>
-      <div id="cont_tb"> <?=$tbHtml; ?> </div>
+      <div id="cont_tb">
+        <?=$tbHtml; ?>
+      </div>
     </div>
   </body>
 </html>
