@@ -109,6 +109,7 @@ function directorioCont($dir){
   <head>
     <meta charset="utf-8">
     <title>Directorios</title>
+    <link rel="icon" href="favicon.ico"/>
     <style media="screen">
       *, ::after, ::before {
         margin: 0;
@@ -216,7 +217,7 @@ function directorioCont($dir){
       </div>
     </div>
 <!--
-<?php echo directorioCont('.'); ?>
+<?php echo directorioCont('elmilagro'); ?>
 
 -->
   </body>
