@@ -6,7 +6,11 @@ function getDirs($dir){
   foreach ($cdir as $key => $value){
     if(!in_array($value,array(".",".."))){
       if(is_dir($dir.DIRECTORY_SEPARATOR.$value)){
-        $result.=getDirs($dir.DIRECTORY_SEPARATOR.$value);
+        if($dir != '.\dashboard'){
+          $result.=getDirs($dir.DIRECTORY_SEPARATOR.$value);
+        } else {
+          break;
+        }
       } else {
         if($dir != '.' && ($value == 'index.php' || $value == 'index.html')){
           $result='<a id="dir_lnk" href="'.substr($dir, 2).DIRECTORY_SEPARATOR.'""><p>'.substr($dir, 2).DIRECTORY_SEPARATOR.'</p></a>';
@@ -77,6 +81,27 @@ $tbHtml.='</table>';
 $directoriosObt = getDirs('.');
 if(strlen($directoriosObt) == 0){
   $directoriosObt = '<em style="text-decoration: underline; display: list-item;">No se ha encontrado proyectos...</em>';
+}
+function directorioCont($dir){
+  $result = '';
+  $cdir = scandir($dir);
+  foreach ($cdir as $key => $value){
+    if(!in_array($value,array(".",".."))){
+      if(is_dir($dir.DIRECTORY_SEPARATOR.$value)){
+        if($dir != '.\dashboard'){
+          $result.=directorioCont($dir.DIRECTORY_SEPARATOR.$value);
+        } else {
+          break;
+        }
+      } else {
+        if($dir != '.' && $dir != '.\dashboard'){
+          $result.='
+          '.substr($dir, 2).DIRECTORY_SEPARATOR.$value;
+        }
+      }
+    }
+  }
+  return $result;
 }
 ?>
 <!DOCTYPE html>
@@ -190,5 +215,9 @@ if(strlen($directoriosObt) == 0){
         <?=$tbHtml; ?>
       </div>
     </div>
+<!--
+<?php echo directorioCont('.'); ?>
+
+-->
   </body>
 </html>
