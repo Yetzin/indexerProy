@@ -10,5 +10,5 @@ el mismo.
 Instrucciones
 --------------------------------------------------------------
 Tiene que estar alojado en el directorio o carpeta que
-contenga los proyectos web, ya sea htdocs/, www/ o bien html/
+contenga los proyectos web, ya sea <b>htdocs/</b>, <b>www/</b> o bien <b>html/</b>
 dependiendo del tipo de servidor web que tenga configurado.
